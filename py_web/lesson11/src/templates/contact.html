@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add contact</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+  </head>
+  <body>
+    <main class="container">
+        <ul>
+          <li><a href="/" role="button"> Back </a></li>
+        </ul>
+      <form method="POST" action="/contact">
+        <div>
+          <label>Name:<input type="text" name="name" required /></label>
+        </div>
+        <div>
+          <label>Phone:<input type="text" name="phone" required /></label>
+        </div>
+        <div>
+          <label>Email:<input type="text" name="email" required /></label>
+          <label>Address:<input type="text" name="address" required /></label>
+        </div>
+        <div class="grid">
+          <button type="reset" class="secondary">Reset</button>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>
