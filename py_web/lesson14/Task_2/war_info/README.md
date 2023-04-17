@@ -1,0 +1,1 @@
+**Парсинг** втрат російської федерації у війні з Україною з сайту https://index.minfin.com.ua/ua/russian-invading/casualties за допомогою бібліотеки scrapy і подальшим зберіганням у losses.json файл.

@@ -22,7 +22,7 @@ def get_urls() -> List[str]:
     return urls
 
 
-def spider(urls: List[str]):
+def spider(urls: List[str]) -> List[dict]:
     data = []
     for url in urls:
         response = requests.get(base_url + url)
