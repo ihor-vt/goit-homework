@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lesson13"
+version = "0.1.0"
+description = "Django test project"
+authors = ["Ihor Voitiuk"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+pillow = "^9.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
