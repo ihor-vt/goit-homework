@@ -1,11 +1,9 @@
 import datetime
-import logging
-
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from src.database.models import Contact
-from src.schemas import ContactModel, ContactResponse
+from src.schemas import ContactModel
 
 
 async def get_contact_by_id(contact_id: int, db: Session):
@@ -105,23 +103,22 @@ async def search_contacts(
 
 
 async def birthday_contacts(db: Session):
-    # start_day = datetime.date.today() + datetime.timedelta(days=1)
-    # end_day = datetime.date.today() + datetime.timedelta(days=8)
-    # logging.warning(f"Start_day: {start_day}, End_day: {end_day}")
-    # contacts = (
-    #     db.query(Contact)
-    #     .filter(Contact.birthday >= start_day, Contact.birthday <= end_day)
-    #     .all()
-    # )
-    # logging.warning(f"Found {len(contacts)} contacts")
-    # return contacts
+    start_day = datetime.date.today() + datetime.timedelta(days=1)
+    end_day = datetime.date.today() + datetime.timedelta(days=8)
+    contacts = (
+        db.query(Contact)
+        .filter(Contact.birthday >= start_day, Contact.birthday <= end_day)
+        .all()
+    )
 
-    sql_query = """
-        SELECT * FROM contact
-        WHERE date_part('month', birthday) = date_part('month', CURRENT_DATE + INTERVAL '1 DAY')
-            AND date_part('day', birthday) BETWEEN date_part('day', CURRENT_DATE + INTERVAL '1 DAY')
-                                            AND date_part('day', CURRENT_DATE + INTERVAL '8 DAY')
-    """
-    contacts = db.execute(text(sql_query)).fetchall()
-    logging.info(f"Found {len(contacts)} contacts")
     return contacts
+
+    # sql_query = """
+    #     SELECT * FROM contact
+    #     WHERE date_part('month', birthday) = date_part('month', CURRENT_DATE + INTERVAL '1 DAY')
+    #         AND date_part('day', birthday) BETWEEN date_part('day', CURRENT_DATE + INTERVAL '1 DAY')
+    #                                         AND date_part('day', CURRENT_DATE + INTERVAL '8 DAY')
+    # """
+    # contacts = db.execute(text(sql_query)).fetchall()
+
+    # return contacts

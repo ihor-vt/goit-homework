@@ -1,23 +1,19 @@
 from pathlib import Path
 
-import uvicorn
-from fastapi import FastAPI, BackgroundTasks
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
-from pydantic import EmailStr, BaseModel
-from typing import List
+from fastapi_mail.errors import ConnectionErrors
+from pydantic import EmailStr
 
-
-class EmailSchema(BaseModel):
-    email: EmailStr
-
+from src.services.auth import auth_service
+from src.conf.config import settings
 
 conf = ConnectionConfig(
-    MAIL_USERNAME="ihor.voitiuk@meta.ua",
-    MAIL_PASSWORD="2jeJCMj5KrNSWsf",
-    MAIL_FROM="igor.voyt98@gmail.com",
-    MAIL_PORT=465,
-    MAIL_SERVER="smtp.meta.ua",
-    MAIL_FROM_NAME="My example mail",
+    MAIL_USERNAME=settings.mail_username,
+    MAIL_PASSWORD=settings.mail_password,
+    MAIL_FROM=EmailStr(settings.mail_username),
+    MAIL_PORT=settings.mail_port,
+    MAIL_SERVER=settings.mail_server,
+    MAIL_FROM_NAME="Rest API App",
     MAIL_STARTTLS=False,
     MAIL_SSL_TLS=True,
     USE_CREDENTIALS=True,
@@ -25,26 +21,25 @@ conf = ConnectionConfig(
     TEMPLATE_FOLDER=Path(__file__).parent / "templates",
 )
 
-app = FastAPI
 
-
-@app.post("send-email")
-async def send_in_background(background_tasks: BackgroundTasks, body: EmailSchema):
-    message = MessageSchema(
-        subject="Fastapi mail module",
-        recipients=[body.email],
-        template_body={"fullname": "Ihor Voitiuk"},
-        subtype=MessageType.html,
-    )
-
-    fm = FastMail(conf)
-
-    background_tasks.add_task(
-        fm.send_message, message, template_name="example_email.html"
-    )
-
-    return {"message": "email has been sent"}
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
+async def send_email(email: EmailStr, username: str, host: str, subj: str = "Confirm your email "):
+    try:
+        token_verification = auth_service.create_email_token({"sub": email})
+        message = MessageSchema(
+            subject=subj,
+            recipients=[email],
+            template_body={
+                "host": host,
+                "username": username,
+                "token": token_verification,
+            },
+            subtype=MessageType.html
+        )
+        
+        fm = FastMail(conf)
+        if subj == "Confirm your email ":
+            await fm.send_message(message, template_name="email_template.html")
+        elif subj == "Reset your password ":
+            await fm.send_message(message, template_name="email_template_reset_password.html")
+    except ConnectionErrors as err:
+        print(f">>> mail.py {err}")
