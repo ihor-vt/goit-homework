@@ -1,0 +1,18 @@
+{% extends "app_quotes/base.html" %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<div>
+    {% for quote in quotes %}
+    <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <h4><a href="{% url 'app_quotes:author_detail' pk=quote.author.pk %}" role="button" class="secondary">{{quote.author.fullname}}</a></h4>
+        <p>{{quote.description}}</p>
+        <div>
+            {% for tag in quote.tag.all %}
+            <a class="tag" href="#">{{tag.tag}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

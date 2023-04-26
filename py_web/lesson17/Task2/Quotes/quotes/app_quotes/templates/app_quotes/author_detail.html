@@ -1,0 +1,18 @@
+{% extends "app_quotes/base.html" %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<div>
+    <span>Name: {{ author.fullname }}</span>
+    <br>
+    <span>User: {{ author.user.username }}</span>
+    </br>
+    <br>
+    {% for quote in quotes %}
+    <br>
+    <span>Quotes: {{ quote.description }}</span>
+    </br>
+    {% endfor %}
+    </br>
+</div>
+{% endblock %}
