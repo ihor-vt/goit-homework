@@ -2,10 +2,11 @@ from db_mongo import url
 from mongoengine import connect
 
 from models import Authors, Quotes
+
 ########################
 import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "quotes.settings")
 import django
 from django.conf import settings
 
@@ -43,8 +44,10 @@ def main():
     for quote in quotes:
         migrate_tag(quote)
 
-        new_quote = Quote(description=quote.quote,
-                          author=Author.objects.get(fullname=quote.author.fullname))
+        new_quote = Quote(
+            description=quote.quote,
+            author=Author.objects.get(fullname=quote.author.fullname),
+        )
         print(f"Quote added: {new_quote.description}\nAuthor: {new_quote.author}")
         new_quote.save()
         for tag in quote.tags:
