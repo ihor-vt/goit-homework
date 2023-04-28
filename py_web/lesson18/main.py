@@ -46,8 +46,18 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def custom_middleware(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    during = time.time() - start_time
+    response.headers["performance"] = str(during)
+    return response
+
+
 @app.on_event("startup")
 async def startup():
+    print('------------- STARTUP --------------')
     r = await redis.Redis(
         host=settings.redis_host,
         port=settings.redis_port,
@@ -56,15 +66,6 @@ async def startup():
         decode_responses=True,
     )
     await FastAPILimiter.init(r)
-
-
-@app.middleware("http")
-async def custom_middleware(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    during = time.time() - start_time
-    response.headers["performance"] = str(during)
-    return response
 
 
 @app.get("/api/healthchecker")

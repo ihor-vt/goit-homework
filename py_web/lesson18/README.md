@@ -10,3 +10,5 @@
 
 ## Result from documentation
 ![Docs](/image/Screan.png "Optional title")
+## Result from tests
+![Tests](py_web/lesson18/image/tests.png)

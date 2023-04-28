@@ -19,7 +19,6 @@ async def get_contact_by_id(contact_id: int, db: Session):
     """
 
     contact = db.query(Contact).filter_by(id=contact_id).first()
-    # contact = db.query(Contact).filter(Contact.id == )
     return contact
 
 
@@ -117,7 +116,7 @@ async def search_contacts(
     :param first_name: str: Search for a contact by first name
     :param last_name: str: Filter the results by last name
     :param email: str: Search for a contact by email
-    :return: A list of contact objects
+    :return: A list of contact objects or None if no seach contacts
     :doc-author: Ihor Voitiuk
     """
 
