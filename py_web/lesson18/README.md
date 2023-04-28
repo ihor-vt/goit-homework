@@ -12,5 +12,5 @@
 ![Docs](/py_web/lesson18/image/Screan.png "Optional title")
 
 ## Result from tests
-![Tests](py_web/lesson18/image/tests.png)
+![Tests](/py_web/lesson18/image/tests.png)
 
