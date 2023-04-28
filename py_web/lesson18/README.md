@@ -9,4 +9,4 @@
 * Покрийте ваше домашнє завдання тестами більш ніж на 95%. Для контролю використовуйте пакет pytest-cov
 
 ## Result from documentation
-![Docs](/image/Screan.png "Optional title")
+![Docs](/py_web/lesson18/image/Screan.png "Optional title")
